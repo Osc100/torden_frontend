@@ -32,7 +32,12 @@ const MessageCard: FC<MessageCardProps> = (props) => {
 	);
 };
 
-export default function Chat() {
+interface ChatProps {
+	title: string;
+	showSuggestedQuestions?: boolean;
+}
+
+export default function Chat(props: ChatProps) {
 	const {
 		inputMessage,
 		setInputMessage,
@@ -44,10 +49,12 @@ export default function Chat() {
 	return (
 		<div className="bg-gradient-to-b from-[#03577E] to-[#45ACAF] mx-36 rounded-2xl shadow-xl">
 			<h2 className="text-3xl font-bold flex justify-center mb-4 pt-10 pb-8 text-white">
-				{messageHistory.length === 0 ? "PREGUNTAS SUGERIDAS" : "CHAT"}
+				{messageHistory.length === 0 && props.showSuggestedQuestions
+					? "PREGUNTAS SUGERIDAS"
+					: props.title}
 			</h2>
 			<div className="h-[45vh] flex flex-col-reverse mx-10 overflow-y-scroll">
-				{messageHistory.length === 0 ? (
+				{messageHistory.length === 0 && props.showSuggestedQuestions ? (
 					<div className="grid grid-cols-2 gap-4">
 						<Pregunta
 							texto="¿Cómo funciona Torden?"

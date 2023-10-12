@@ -1,4 +1,9 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
+import { IconType } from "react-icons";
 import {
 	FaChartLine,
 	FaGears,
@@ -9,24 +14,26 @@ import {
 } from "react-icons/fa6";
 import UserProfile from "./UserProfile";
 
-import { IconType } from "react-icons";
-
 interface DashboardItemProps {
 	name: string;
 	Icon: IconType;
-	active?: boolean;
+	href: string;
 }
 
 const DashboardItem: FC<DashboardItemProps> = (props) => {
+	const pathname = usePathname();
+	const isActive = pathname === props.href;
 	return (
 		<button
 			type="button"
-			className={`p-4 mt-3 text-lg flex rounded-md items-center w-[80%] transition-colors hover:bg-[#63A8B5] hover:text-white ${
-				props.active ? "text-white bg-[#63A8B5]" : "text-black"
+			className={`mt-3 text-lg flex rounded-md items-center w-[80%] transition-colors hover:bg-[#63A8B5] hover:text-white ${
+				isActive ? "text-white bg-[#63A8B5]" : "text-black"
 			}`}
 		>
-			<props.Icon />
-			<span className="ml-4">{props.name}</span>
+			<Link className="p-4 flex items-center w-full" href={props.href}>
+				<props.Icon />
+				<span className="ml-4">{props.name}</span>
+			</Link>
 		</button>
 	);
 };
@@ -40,15 +47,27 @@ const DashboardSideBar: FC = () => {
 
 			<div className="mt-24" />
 
-			<DashboardItem name="Home" Icon={FaHouse} />
-			<DashboardItem name="Chats" Icon={FaMessage} active />
-			<DashboardItem name="Estadísticas" Icon={FaChartLine} />
-			<DashboardItem name="Historial de chats" Icon={FaPaperclip} />
-			<DashboardItem name="Configuración" Icon={FaGears} />
+			<DashboardItem name="Home" Icon={FaHouse} href={"/dashboard"} />
+			<DashboardItem name="Chats" Icon={FaMessage} href={"/dashboard/chats"} />
+			<DashboardItem
+				name="Estadísticas"
+				Icon={FaChartLine}
+				href={"/dashboard/stats"}
+			/>
+			<DashboardItem
+				name="Historial de chats"
+				Icon={FaPaperclip}
+				href="/dashboard/historial_chats"
+			/>
+			<DashboardItem
+				name="Configuración"
+				Icon={FaGears}
+				href="/dashboard/configuracion"
+			/>
 
 			<div className="flex-grow" />
 
-			<DashboardItem name="Cerrar Sesión" Icon={FaRightFromBracket} />
+			<DashboardItem name="Cerrar Sesión" Icon={FaRightFromBracket} href="#" />
 			<div className="mb-2" />
 		</aside>
 	);

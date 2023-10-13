@@ -6,11 +6,11 @@ import { FC } from "react";
 import { IconType } from "react-icons";
 import {
 	FaChartLine,
-	FaGears,
 	FaHouse,
 	FaMessage,
 	FaPaperclip,
 	FaRightFromBracket,
+	FaUsers,
 } from "react-icons/fa6";
 import UserProfile from "./UserProfile";
 
@@ -60,9 +60,9 @@ const DashboardSideBar: FC = () => {
 				href="/dashboard/historial_chats"
 			/>
 			<DashboardItem
-				name="Configuración"
-				Icon={FaGears}
-				href="/dashboard/configuracion"
+				name="Registrar usuarios"
+				Icon={FaUsers}
+				href="/dashboard/registro"
 			/>
 
 			<div className="flex-grow" />

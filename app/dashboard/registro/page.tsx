@@ -1,17 +1,53 @@
-import { type } from "os";
-import { FiLock, FiMail } from "react-icons/fi";
-import { IconType } from "react-icons";
+"use client";
+
 import LoginInput from "@/components/LoginInput";
-import {
-	AiFillCaretLeft,
-	AiFillCaretRight,
-	AiFillCaretUp,
-	AiFillEdit,
-	AiFillControl,
-	AiFillHome,
-} from "react-icons/ai";
+import { postRequest } from "@/utils/functions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { AiFillControl, AiFillEdit, AiFillHome } from "react-icons/ai";
+import { FiLock, FiMail } from "react-icons/fi";
+
+import { z } from "zod";
+
+const RegisterSchema = z.object({
+	first_name: z.string({ required_error: "Requerido" }),
+	last_name: z.string({ required_error: "Requerido" }),
+	role: z.enum(["agent", "manager", "superuser"], {
+		required_error: "Requerido",
+		invalid_type_error: "Tipo de usuario inválido",
+	}),
+	company_id: z.number({ required_error: "Requerido" }).min(1),
+	email: z
+		.string({ required_error: "Requerido" })
+		.email({ message: "Correo electrónico inválido." }),
+	password: z
+		.string({ required_error: "Requerido" })
+		.min(8, { message: "La contraseña debe tener al menos 8 caracteres." }),
+});
+
+type RegisterData = z.infer<typeof RegisterSchema>;
 
 export default function Login() {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<RegisterData>({
+		resolver: zodResolver(RegisterSchema),
+	});
+
+	const onSubmit = handleSubmit((data) => {
+		postRequest("register", JSON.stringify(data)).then((res) => {
+			if (res.status === 200) {
+				alert(
+					"Usuario registrado exitosamente, ya se puede iniciar sesión con el nuevo usuario.",
+				);
+			} else {
+				console.log(res.json().then((data) => {}));
+			}
+		});
+	});
+
 	return (
 		<div className="  h-screen  grid grid-cols-2  bg-[#1D3556] px-[2%] py-[5%]">
 			<div className=" rounded-xl shadow-2xl bg-[#76B7C0]  flex flex-col gap-2  ">
@@ -31,36 +67,66 @@ export default function Login() {
 						Registrar usuario
 					</h1>
 				</div>
-				<div className=" grid grid-cols-2 gap-x-6 px-[5%] ">
-					<LoginInput type="text" placeholder="Nombre" Icon={AiFillEdit} />
-
-					<LoginInput type="text" placeholder="Apellido" Icon={AiFillEdit} />
-
-					<LoginInput type="text" placeholder="Rol" Icon={AiFillControl} />
-					<LoginInput type="text" placeholder="Compañía" Icon={AiFillHome} />
+				<form
+					onSubmit={onSubmit}
+					className=" grid grid-cols-2 gap-x-6 px-[5%] "
+				>
 					<LoginInput
+						{...register("first_name", { required: true })}
+						type="text"
+						placeholder="Nombre"
+						errorMessage={errors.first_name?.message}
+						Icon={AiFillEdit}
+					/>
+
+					<LoginInput
+						type="text"
+						{...register("last_name", { required: true })}
+						errorMessage={errors.last_name?.message}
+						placeholder="Apellido"
+						Icon={AiFillEdit}
+					/>
+
+					<LoginInput
+						{...register("role", { required: true })}
+						type="text"
+						placeholder="Rol"
+						errorMessage={errors.role?.message}
+						Icon={AiFillControl}
+					/>
+					<LoginInput
+						{...register("company_id", { required: true, valueAsNumber: true })}
+						type="number"
+						placeholder="Compañía"
+						value={1}
+						onChange={() => {
+							console.log("Not implemented");
+						}}
+						errorMessage={errors.company_id?.message}
+						Icon={AiFillHome}
+					/>
+					<LoginInput
+						{...register("email", { required: true })}
 						type="email"
 						placeholder="Correo electronico"
+						errorMessage={errors.email?.message}
 						Icon={FiMail}
 					/>
-					<LoginInput type="password" placeholder="Contraseña" Icon={FiLock} />
+					<LoginInput
+						{...register("password", { required: true })}
+						type="password"
+						errorMessage={errors.password?.message}
+						placeholder="Contraseña"
+						Icon={FiLock}
+					/>
 
-					{/* <label className="inline-flex items-center ">
-          <input
-            type="checkbox"
-            className="form-checkbox bg-[#76B7C0]  h-8 w-8 mb-10"
-          />
-          <span className="ml-4 mb-10 text-white text-2xl">
-            Recuérdame
-          </span>
-        </label> */}
-				</div>
-				<a
-					href="/registro"
-					className=" mx-16 text-xl font-bold bg-white rounded-xl  text-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-[60%] shadow-xl hover:bg-secundario transition-colors duration-500 mt-10"
-				>
-					<button type="button">Guardar registro</button>
-				</a>
+					<button
+						className="mx-16 text-xl font-bold bg-white rounded-xl  text-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-[60%] shadow-xl hover:bg-secundario transition-colors duration-500 mt-10"
+						type="submit"
+					>
+						Guardar registro
+					</button>
+				</form>
 			</div>
 		</div>
 	);

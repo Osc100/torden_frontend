@@ -1,6 +1,47 @@
+"use client";
+
 import LoginInput from "@/components/LoginInput";
+import { postRequest } from "@/utils/functions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { FiLock, FiMail } from "react-icons/fi";
+
+import { z } from "zod";
+
+const loginSchema = z.object({
+	email: z
+		.string({ required_error: "Requerido" })
+		.email({ message: "Correo electrónico inválido." }),
+	password: z.string({ required_error: "Requerido" }),
+});
+
+type LoginData = z.infer<typeof loginSchema>;
+
 export default function Login() {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginData>({
+		resolver: zodResolver(loginSchema),
+	});
+
+	const router = useRouter();
+	const onSubmit = handleSubmit((data) => {
+		postRequest("login", JSON.stringify(data)).then((res) => {
+			if (res.status === 200) {
+				res.json().then((data) => console.log(data.account));
+				sessionStorage.setItem("session", JSON.stringify(data));
+				console.log(sessionStorage.getItem("session"));
+
+				router.push("/dashboard");
+			} else {
+				alert("Usuario o contraseña incorrectos");
+			}
+		});
+	});
+
 	return (
 		<div className="  h-screen  grid grid-cols-2  bg-[#76B7C0] px-[12%] py-[5%]">
 			<div className=" rounded-xl shadow-2xl bg-[#1D3556]  flex flex-col gap-2  ">
@@ -14,7 +55,10 @@ export default function Login() {
 					<div />
 				</div>
 			</div>
-			<div className="flex flex-col justify-center items-center">
+			<form
+				className="flex flex-col justify-center items-center"
+				onSubmit={onSubmit}
+			>
 				<div>
 					<h1 className="text-4xl text-center text-white font-extrabold drop-shadow-md hover:text-[#1D3556] transition-colors duration-500 mb-24  ">
 						Inicio de sesión
@@ -22,28 +66,29 @@ export default function Login() {
 				</div>
 
 				<LoginInput
-					type="email"
+					{...register("email", { required: true })}
+					type="text"
 					placeholder="Correo electrónico"
+					errorMessage={errors.email?.message}
+					className="w-80"
 					Icon={FiMail}
 				/>
-				<LoginInput type="password" placeholder="Contraseña" Icon={FiLock} />
+				<LoginInput
+					{...register("password", { required: true })}
+					type="password"
+					className="w-80"
+					placeholder="Contraseña"
+					errorMessage={errors.password?.message}
+					Icon={FiLock}
+				/>
 
-				{/* <label className="inline-flex items-center ">
-          <input
-            type="checkbox"
-            className="form-checkbox bg-[#76B7C0]  h-8 w-8 mb-10"
-          />
-          <span className="ml-4 mb-10 text-white text-2xl">
-            Recuérdame
-          </span>
-        </label> */}
-				<a
-					href="/dashboard"
-					className=" mx-16 text-xl font-bold text-white rounded-xl  bg-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-[60%] shadow-xl hover:bg-[#03577B] transition-colors duration-500"
+				<button
+					className=" text-xl font-bold text-white rounded-xl  bg-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-96 shadow-xl hover:bg-[#03577B] transition-colors duration-500"
+					type="submit"
 				>
-					<button type="button">Ingresar</button>
-				</a>
-			</div>
+					Ingresar
+				</button>
+			</form>
 		</div>
 	);
 }

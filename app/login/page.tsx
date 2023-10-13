@@ -1,3 +1,4 @@
+import LoginInput from "@/components/LoginInput";
 import { FiLock, FiMail } from "react-icons/fi";
 export default function Login() {
 	return (
@@ -19,28 +20,14 @@ export default function Login() {
 						Inicio de sesión
 					</h1>
 				</div>
-				<div
-					className="text-white mb-10 border border-white rounded-xl flex px-2 items-center py-1 
-        text-2xl h-14 w-[60%] shadow-xl mt-16"
-				>
-					<FiMail />
-					<input
-						className="   bg-[#76B7C0] placeholder-white ml-1 focus:outline-none"
-						type="email"
-						placeholder=" Email Address"
-					/>
-				</div>
-				<div
-					className="text-white mb-10 border border-white rounded-xl flex px-2 items-center py-1 
-        text-2xl h-14 w-[60%] shadow-xl "
-				>
-					<FiLock />
-					<input
-						className=" bg-[#76B7C0] placeholder-white ml-2 focus:outline-none"
-						type="password"
-						placeholder="Contraseña"
-					/>
-				</div>
+
+				<LoginInput
+					type="email"
+					placeholder="Correo electrónico"
+					Icon={FiMail}
+				/>
+				<LoginInput type="password" placeholder="Contraseña" Icon={FiLock} />
+
 				{/* <label className="inline-flex items-center ">
           <input
             type="checkbox"
@@ -50,15 +37,12 @@ export default function Login() {
             Recuérdame
           </span>
         </label> */}
-
-				<button
-					type="button"
-					className=" font-bold text-white rounded-xl  bg-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-[60%] shadow-xl hover:bg-[#03577B] transition-colors duration-500"
+				<a
+					href="/dashboard"
+					className=" mx-16 text-xl font-bold text-white rounded-xl  bg-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-[60%] shadow-xl hover:bg-[#03577B] transition-colors duration-500"
 				>
-					<a href="/dashboard" className=" mx-16 text-xl ">
-						Ingresar
-					</a>
-				</button>
+					<button type="button">Ingresar</button>
+				</a>
 			</div>
 		</div>
 	);

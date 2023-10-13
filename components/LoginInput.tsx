@@ -13,7 +13,7 @@ function LoginInput(props: InputProps) {
 		>
 			<props.Icon />
 			<input
-				className="   bg-[#1D3556] placeholder-white ml-1 focus:outline-none min-w-0"
+				className="   bg-transparent placeholder-white ml-1 focus:outline-none min-w-0"
 				type={props.type}
 				placeholder={props.placeholder}
 			/>

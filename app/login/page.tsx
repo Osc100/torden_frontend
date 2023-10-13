@@ -16,7 +16,7 @@ export default function Login() {
 			</div>
 			<div className="flex flex-col justify-center items-center">
 				<div>
-					<h1 className="text-4xl text-center text-white font-extrabold drop-shadow-md hover:text-[#1D3556] transition-colors duration-500  ">
+					<h1 className="text-4xl text-center text-white font-extrabold drop-shadow-md hover:text-[#1D3556] transition-colors duration-500 mb-24  ">
 						Inicio de sesión
 					</h1>
 				</div>

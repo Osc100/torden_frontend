@@ -2,6 +2,14 @@ import { type } from "os";
 import { FiLock, FiMail } from "react-icons/fi";
 import { IconType } from "react-icons";
 import LoginInput from "@/components/LoginInput";
+import {
+	AiFillCaretLeft,
+	AiFillCaretRight,
+	AiFillCaretUp,
+	AiFillEdit,
+	AiFillControl,
+	AiFillHome,
+} from "react-icons/ai";
 
 export default function Login() {
 	return (
@@ -24,18 +32,18 @@ export default function Login() {
 					</h1>
 				</div>
 				<div className=" grid grid-cols-2 gap-x-6 px-[5%] ">
-					<LoginInput type="text" placeholder="Nombre" Icon={FiMail} />
+					<LoginInput type="text" placeholder="Nombre" Icon={AiFillEdit} />
 
-					<LoginInput type="text" placeholder="Apellido" Icon={FiMail} />
+					<LoginInput type="text" placeholder="Apellido" Icon={AiFillEdit} />
 
-					<LoginInput type="text" placeholder="Rol" Icon={FiMail} />
-					<LoginInput type="text" placeholder="Compañía" Icon={FiMail} />
+					<LoginInput type="text" placeholder="Rol" Icon={AiFillControl} />
+					<LoginInput type="text" placeholder="Compañía" Icon={AiFillHome} />
 					<LoginInput
 						type="email"
 						placeholder="Correo electronico"
 						Icon={FiMail}
 					/>
-					<LoginInput type="password" placeholder="Contraseña" Icon={FiMail} />
+					<LoginInput type="password" placeholder="Contraseña" Icon={FiLock} />
 
 					{/* <label className="inline-flex items-center ">
           <input
@@ -51,7 +59,7 @@ export default function Login() {
 					href="/registro"
 					className=" mx-16 text-xl font-bold bg-white rounded-xl  text-[#1D3556] py-1 flex items-center text-center justify-center h-14 w-[60%] shadow-xl hover:bg-secundario transition-colors duration-500 mt-10"
 				>
-					<button type="button">Registrarse</button>
+					<button type="button">Guardar registro</button>
 				</a>
 			</div>
 		</div>

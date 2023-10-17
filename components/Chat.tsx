@@ -1,6 +1,6 @@
 "use client";
 
-import useChat from "@/hooks/useChat";
+import useChat, { FirstMessageType } from "@/hooks/useChat";
 import { FC } from "react";
 
 interface MessageCardProps {
@@ -22,7 +22,11 @@ const MessageCard: FC<MessageCardProps> = (props) => {
 						props.is_user_message ? "text-right" : "text-left"
 					}`}
 				>
-					{props.author === "user" ? "Tú" : "Torden"}
+					{props.author === "user"
+						? "Tú"
+						: props.author === "agent"
+						? "Agente"
+						: "Torden"}
 				</h4>
 				<p className="shadow-md bg-white rounded-lg px-3 py-5">
 					{props.content}
@@ -35,6 +39,7 @@ const MessageCard: FC<MessageCardProps> = (props) => {
 interface ChatProps {
 	title: string;
 	showSuggestedQuestions?: boolean;
+	messageType: FirstMessageType["message_type"];
 }
 
 export default function Chat(props: ChatProps) {
@@ -44,7 +49,8 @@ export default function Chat(props: ChatProps) {
 		messageHistory,
 		handleMessageSubmit,
 		sendButtonEnabled,
-	} = useChat();
+		channel,
+	} = useChat({ message_type: props.messageType });
 
 	return (
 		<div className="bg-gradient-to-b from-[#03577E] to-[#45ACAF] mx-36 rounded-2xl shadow-xl">
@@ -60,26 +66,29 @@ export default function Chat(props: ChatProps) {
 							texto="¿Cómo funciona Torden?"
 							onClick={() => {
 								console.log("¿Cómo funciona Torden?");
-								handleMessageSubmit("¿Cómo funciona Torden?");
+								handleMessageSubmit("¿Cómo funciona Torden?", channel);
 							}}
 							disabled={!sendButtonEnabled}
 						/>
 						<Pregunta
 							texto="¿A quiénes estamos dirigidos?"
 							onClick={() =>
-								handleMessageSubmit("¿A quiénes estamos dirigidos?")
+								handleMessageSubmit("¿A quiénes estamos dirigidos?", channel)
 							}
 							disabled={!sendButtonEnabled}
 						/>
 						<Pregunta
 							texto="¿Qué es Torden?"
-							onClick={() => handleMessageSubmit("¿Qué es Torden?")}
+							onClick={() => handleMessageSubmit("¿Qué es Torden?", channel)}
 							disabled={!sendButtonEnabled}
 						/>
 						<Pregunta
 							texto="Me gustaría contactarme con Torden"
 							onClick={() =>
-								handleMessageSubmit("Me gustaría contactarme con Torden")
+								handleMessageSubmit(
+									"Me gustaría contactarme con Torden",
+									channel,
+								)
 							}
 							disabled={!sendButtonEnabled}
 						/>
@@ -91,9 +100,9 @@ export default function Chat(props: ChatProps) {
 						.map((currentMessage, index) => (
 							<MessageCard
 								key={`${index} - message card number}`}
-								author={currentMessage.role}
-								content={currentMessage.content}
-								is_user_message={currentMessage.role === "user"}
+								author={currentMessage.message.role}
+								content={currentMessage.message.content}
+								is_user_message={currentMessage.message.role === "user"}
 							/>
 						))
 				)}
@@ -104,7 +113,7 @@ export default function Chat(props: ChatProps) {
 					onSubmit={(e) => {
 						e.preventDefault();
 						if (sendButtonEnabled) {
-							handleMessageSubmit(inputMessage);
+							handleMessageSubmit(inputMessage, channel);
 						}
 					}}
 				>

@@ -3,14 +3,25 @@ import { useState } from "react";
 
 import { useWebSocket } from "react-use-websocket/dist/lib/use-websocket";
 
+interface WSMessage {
+	channel: string;
+	message: GPTMessage;
+}
+
 interface GPTMessage {
 	role: "user" | "assistant" | "system";
 	content: string;
 }
-export default function useChat() {
+
+export type FirstMessageType = {
+	message_type: "NewUUID" | "ExistingUUID" | "ChatAgent";
+};
+
+export default function useChat({ message_type }: FirstMessageType) {
 	const [inputMessage, setInputMessage] = useState("");
-	const [messageHistory, setMessageHistory] = useState<GPTMessage[]>([]);
+	const [messageHistory, setMessageHistory] = useState<WSMessage[]>([]);
 	const [sendButtonEnabled, setSendButtonEnabled] = useState(true);
+	const [channel, setChannel] = useState<string>("");
 
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
 		`ws://${API_HOST}/chat`,
@@ -20,23 +31,49 @@ export default function useChat() {
 				// if (uuid) {
 				//   sendMessage(uuid);
 				// } else {
-				sendMessage(
-					JSON.stringify({
-						message_type: "NewUUID",
-						message_content: "",
-					}),
-				);
-				console.log("NewUUID");
+				//
+				switch (message_type) {
+					case "NewUUID":
+					case "ExistingUUID":
+						sendMessage(
+							JSON.stringify({
+								message_type,
+								message_content: "",
+							}),
+						);
+						break;
+					case "ChatAgent":
+						console.log(message_type);
+						console.log(
+							"token",
+							sessionStorage.getItem("session"),
+							JSON.parse(sessionStorage.getItem("session") ?? "{}"),
+						);
+						sendMessage(
+							JSON.stringify({
+								message_type,
+								message_content: JSON.parse(
+									sessionStorage.getItem("session") ?? "{}",
+								).token,
+							}),
+						);
+				}
+				console.log(message_type);
 			},
 			onMessage: (e) => {
 				console.log(e.data);
-				const data: GPTMessage | GPTMessage[] = JSON.parse(e.data);
-				if (Array.isArray(data) && data) {
-					const newMessages = data as GPTMessage[];
+				const data: WSMessage | WSMessage[] | { channel: string } = JSON.parse(
+					e.data,
+				);
+
+				if ("channel" in data && !("message" in data)) {
+					setChannel(data.channel);
+				} else if (Array.isArray(data) && data) {
+					const newMessages = data as WSMessage[];
 					setMessageHistory((prev) => [...prev, ...newMessages]);
 				} else if (data) {
-					const newMessage = data as GPTMessage;
-					if (newMessage.role === "assistant") {
+					const newMessage = data as WSMessage;
+					if (["assistant", "agent"].includes(newMessage.message.role)) {
 						setSendButtonEnabled(true);
 					}
 					setMessageHistory((prev) => [...prev, newMessage]);
@@ -45,9 +82,17 @@ export default function useChat() {
 		},
 	);
 
-	const handleMessageSubmit = (newMessage: string) => {
+	const handleMessageSubmit = (newMessage: string, uuid: string) => {
+		const messageObject: WSMessage = {
+			channel: uuid,
+			message: {
+				role: message_type === "ChatAgent" ? "assistant" : "user",
+				content: newMessage,
+			},
+		};
+
 		if (newMessage) {
-			sendMessage(newMessage);
+			sendMessage(JSON.stringify(messageObject));
 			setInputMessage("");
 			setSendButtonEnabled(false);
 		} else {
@@ -61,5 +106,6 @@ export default function useChat() {
 		messageHistory,
 		sendButtonEnabled,
 		handleMessageSubmit,
+		channel,
 	};
 }

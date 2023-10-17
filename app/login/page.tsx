@@ -31,11 +31,12 @@ export default function Login() {
 	const onSubmit = handleSubmit((data) => {
 		postRequest("login", JSON.stringify(data)).then((res) => {
 			if (res.status === 200) {
-				res.json().then((data) => console.log(data.account));
-				sessionStorage.setItem("session", JSON.stringify(data));
-				console.log(sessionStorage.getItem("session"));
+				res.json().then((responseData) => {
+					sessionStorage.setItem("session", JSON.stringify(responseData));
+					console.log(sessionStorage.getItem("session"));
 
-				router.push("/dashboard");
+					router.push("/dashboard");
+				});
 			} else {
 				alert("Usuario o contraseña incorrectos");
 			}

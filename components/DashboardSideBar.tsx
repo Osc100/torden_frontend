@@ -43,7 +43,11 @@ const DashboardSideBar: FC = () => {
 		<aside className="w-[20%] flex flex-col items-center bg-white h-screen">
 			<img src="/logoTorden.png" alt="Logo de Torden" className="h-24 mt-5 " />
 
-			<UserProfile src="/Kelly.jpeg" name="Kelly Roxell" role="Agente" />
+			<UserProfile
+				src="/Katherine.jpeg"
+				name="Katherine Cundano"
+				role="Agente"
+			/>
 
 			<div className="mt-24" />
 

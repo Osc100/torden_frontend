@@ -33,7 +33,11 @@ export default function Home() {
 						nuevo nivel utilizando la poderosa tecnología del modelo de lenguaje
 						natural GPT-3.5 de OpenAI.
 					</p>
-					<Chat title="PREGUNTAS SUGERIDAS" showSuggestedQuestions />
+					<Chat
+						title="PREGUNTAS SUGERIDAS"
+						showSuggestedQuestions
+						messageType="NewUUID"
+					/>
 					<div className="flex">
 						<img
 							src="hombre_computadora.png"

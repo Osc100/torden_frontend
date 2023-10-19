@@ -1,12 +1,30 @@
+import MonthBarChart from "@/components/MonthBarChart";
+import WeekBarChart from "@/components/WeekBarCharts";
 import {
 	AiFillCaretLeft,
 	AiFillCaretRight,
 	AiFillCaretUp,
 } from "react-icons/ai";
+
 export default function Dashboard() {
 	return (
-		<div className="h-full flex items-center justify-center bg-gradient-to-b from-[#03577E] to-[#45ACAF] mx-36 rounded-2xl shadow-xl mt-20 mb-20">
+		<div className="h-full p-8 grid grid-cols-2 grid-rows-2 gap-10">
 			<CuadroEstadistica nombre="Chats supervisados" mes="Febrero" año="2023" />
+			<CuadroEstadistica
+				nombre="Tiempo total conectado"
+				mes="Marzo"
+				año="2023"
+			/>
+			<CuadroEstadistica
+				nombre="Mensajes totales monitoriados"
+				mes="Julio"
+				año="2023"
+			/>
+			<CuadroEstadistica
+				nombre="Mensajes totales generados"
+				mes="Agosto"
+				año="2023"
+			/>
 		</div>
 	);
 }
@@ -19,31 +37,43 @@ interface CuadroEstadisticaProps {
 
 function CuadroEstadistica(props: CuadroEstadisticaProps) {
 	return (
-		<div>
-			<div className="h-96 w-96 shadow-2xl text-xl flex flex-col items-center ">
-				<div>
-					<AiFillCaretLeft />
-
-					<button
-						type="button"
-						className="hover:bg-secundario bg-slate-200 flex justify-center items-center rounded-xl px-5"
-					>
-						{props.mes}
+		<div className="h-full w-full shadow-2xl text-xl bg-slate-100 rounded-lg ">
+			<div className="text-2xl font-medium items-center flex justify-center my-8">
+				{props.nombre}
+			</div>
+			<div>
+				<div className="flex justify-center px-3 my-5">
+					<button type="button">
+						<AiFillCaretLeft />
 					</button>
-					<AiFillCaretRight />
+
+					<a href="/dashboard/stats/weekly/">
+						<button
+							type="submit"
+							className="hover:bg-primario bg-secundario text-white flex justify-center items-center rounded-xl px-5 shadow-xl"
+						>
+							{props.mes}
+						</button>
+					</a>
+
+					<button type="button">
+						<AiFillCaretRight />
+					</button>
 				</div>
 
-				<div>
-					<AiFillCaretLeft />
+				<div className="flex justify-center  px-3  pb-5">
+					<button type="button">
+						<AiFillCaretLeft />
+					</button>
 
-					<div className=" bg-slate-200 flex justify-center items-center rounded-xl px-5">
+					<div className="text-white bg-secundario flex justify-center items-center rounded-xl px-5 shadow-xl ">
 						{props.año}
 					</div>
-					<AiFillCaretRight />
+					<button type="button">
+						<AiFillCaretRight />
+					</button>
 				</div>
-			</div>
-			<div className="text-2xl font-medium items-center flex justify-center">
-				{props.nombre}
+				<MonthBarChart />
 			</div>
 		</div>
 	);

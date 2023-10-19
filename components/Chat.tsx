@@ -1,6 +1,6 @@
 "use client";
 
-import useChat, { FirstMessageType } from "@/hooks/useChat";
+import { WSMessage } from "@/hooks/useChat";
 import { FC } from "react";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { GoPeople } from "react-icons/go";
@@ -41,7 +41,14 @@ const MessageCard: FC<MessageCardProps> = (props) => {
 interface ChatProps {
 	title: string;
 	showSuggestedQuestions?: boolean;
-	messageType: FirstMessageType["message_type"];
+	inputMessage: string;
+	setInputMessage: (message: string) => void;
+	messageHistory: WSMessage[];
+	handleMessageSubmit: (message: string, channel: string) => void;
+	channel: string;
+	sendButtonEnabled?: boolean;
+	showAgentControls?: boolean;
+	noMargin?: boolean;
 }
 
 export default function Chat(props: ChatProps) {
@@ -52,10 +59,14 @@ export default function Chat(props: ChatProps) {
 		handleMessageSubmit,
 		sendButtonEnabled,
 		channel,
-	} = useChat({ message_type: props.messageType });
+	} = props;
 
 	return (
-		<div className="bg-gradient-to-b from-[#03577E] to-[#45ACAF] mx-36 rounded-2xl shadow-xl flex">
+		<div
+			className={`bg-gradient-to-b from-[#03577E] to-[#45ACAF] ${
+				props.noMargin ? "" : "mx-36"
+			} rounded-2xl shadow-xl flex`}
+		>
 			<div className="flex-[14] ">
 				<h2 className="text-3xl font-bold flex justify-center mb-4 pt-10 pb-8 text-white">
 					{messageHistory.length === 0 && props.showSuggestedQuestions
@@ -140,6 +151,11 @@ export default function Chat(props: ChatProps) {
 				<button
 					className="bg-[#03577E] rounded-full w-16 h-16 shadow-md mb-10 -ml-3"
 					type="submit"
+					onClick={
+						sendButtonEnabled
+							? () => handleMessageSubmit(inputMessage, channel)
+							: () => {}
+					}
 					disabled={!sendButtonEnabled}
 				>
 					<img src="/send.svg" alt="Enviar" className="ml-[-0.35rem]" />

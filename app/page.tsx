@@ -1,4 +1,4 @@
-import Chat from "@/components/Chat";
+import HomeChat from "@/components/HomeChat";
 
 export default function Home() {
 	return (
@@ -33,11 +33,8 @@ export default function Home() {
 						nuevo nivel utilizando la poderosa tecnología del modelo de lenguaje
 						natural GPT-3.5 de OpenAI.
 					</p>
-					<Chat
-						title="PREGUNTAS SUGERIDAS"
-						showSuggestedQuestions
-						messageType="NewUUID"
-					/>
+					
+					<HomeChat />
 					<div className="flex">
 						<img
 							src="hombre_computadora.png"
@@ -60,7 +57,7 @@ export default function Home() {
 								</li>
 							</ul>
 						</div>
-					</div>
+					H</div>
 				</div>
 			</div>
 			<div

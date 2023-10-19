@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { useWebSocket } from "react-use-websocket/dist/lib/use-websocket";
 
-interface WSMessage {
+export interface WSMessage {
 	channel: string;
 	message: GPTMessage;
 }
@@ -21,7 +21,7 @@ export default function useChat({ message_type }: FirstMessageType) {
 	const [inputMessage, setInputMessage] = useState("");
 	const [messageHistory, setMessageHistory] = useState<WSMessage[]>([]);
 	const [sendButtonEnabled, setSendButtonEnabled] = useState(true);
-	const [channel, setChannel] = useState<string>("");
+	const [defaultChannel, setDefaultChannel] = useState<string>("");
 
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
 		`ws://${API_HOST}/chat`,
@@ -67,7 +67,7 @@ export default function useChat({ message_type }: FirstMessageType) {
 				);
 
 				if ("channel" in data && !("message" in data)) {
-					setChannel(data.channel);
+					setDefaultChannel(data.channel);
 				} else if (Array.isArray(data) && data) {
 					const newMessages = data as WSMessage[];
 					setMessageHistory((prev) => [...prev, ...newMessages]);
@@ -91,10 +91,15 @@ export default function useChat({ message_type }: FirstMessageType) {
 			},
 		};
 
+		console.log("messageObject", messageObject);
+
 		if (newMessage) {
 			sendMessage(JSON.stringify(messageObject));
 			setInputMessage("");
-			setSendButtonEnabled(false);
+
+			if (message_type !== "ChatAgent") {
+				setSendButtonEnabled(false);
+			}
 		} else {
 			alert("Porfavor llena la caja de mensaje");
 		}
@@ -106,6 +111,6 @@ export default function useChat({ message_type }: FirstMessageType) {
 		messageHistory,
 		sendButtonEnabled,
 		handleMessageSubmit,
-		channel,
+		channel: defaultChannel,
 	};
 }

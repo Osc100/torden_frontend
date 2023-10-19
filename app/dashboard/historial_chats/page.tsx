@@ -15,7 +15,7 @@ export default function HistorialChatPage() {
 						<tr className="text-xl h-10 text-primario  ">
 							<th className="border border-blue-400 ">AGENTE</th>
 							<th className="border border-blue-400">CLIENTE</th>
-							<th className="border border-blue-400">DESCRIPCION</th>
+
 							<th className="border border-blue-400">FECHA</th>
 						</tr>
 					</thead>
@@ -23,13 +23,11 @@ export default function HistorialChatPage() {
 						<FilaDatos
 							nombreAgente="Julio"
 							nombreCliente="Jairo Rodriguez"
-							descripcion="Fallo de wifi"
 							fecha={new Date()}
 						/>
 						<FilaDatos
 							nombreAgente="Andy"
 							nombreCliente="Diana Martinez"
-							descripcion="Compra de productos"
 							fecha={new Date()}
 						/>
 					</tbody>
@@ -41,7 +39,7 @@ export default function HistorialChatPage() {
 interface DatosTabla {
 	nombreAgente: string;
 	nombreCliente: string;
-	descripcion: string;
+
 	fecha: Date;
 }
 
@@ -50,7 +48,7 @@ function FilaDatos(props: DatosTabla) {
 		<tr className="text-xl text-black h-10">
 			<td className="border border-blue-400 pl-5 ">{props.nombreAgente}</td>
 			<td className="border border-blue-400 pl-5">{props.nombreCliente}</td>
-			<td className="border border-blue-400 pl-5">{props.descripcion}</td>
+
 			<td className="border border-blue-400 pl-5">
 				{props.fecha.toLocaleDateString()}
 			</td>

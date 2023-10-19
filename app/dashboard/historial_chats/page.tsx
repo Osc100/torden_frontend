@@ -1,24 +1,59 @@
+import { date } from "zod";
+
 export default function HistorialChatPage() {
 	return (
-		<div className="h-full flex  justify-center bg-gradient-to-b from-[#03577E] to-[#45ACAF] mx-36 rounded-2xl shadow-xl mt-20 mb-20">
-			<table className="min-w-full ">
-				<thead>
-					<tr className="text-3xl font-semibold h-10">
-						<th className="border ">Agente</th>
-						<th className="border">Cliente</th>
-						<th className="border">Descripción</th>
-						<th className="border">Fecha</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr className="text-xl text-white">
-						<td className="border flex justify-center items-center">Julio</td>
-						<td className="border  items-center">Jairo Rodriguez</td>
-						<td className="border ">Fallo de wifi</td>
-						<td className="border ">07-09-2023</td>
-					</tr>
-				</tbody>
-			</table>
+		<div
+			className=" bg-gradient-to-b from-[#03577E] to-[#45ACAF] 
+		mx-36 rounded-2xl shadow-xl my-20 h-full"
+		>
+			<div className="text-2xl shadow-2xl font-semibold h-14 mx-32  bg-slate-50 flex justify-center items-center rounded-full my-10">
+				<h1 className="shadow-sm text-primario ">HISTORIAL DE CHATS</h1>
+			</div>
+			<div className="container px-10">
+				<table className=" bg-slate-50 rounded-xl overflow-hidden w-full    shadow-xl ">
+					<thead>
+						<tr className="text-xl h-10 text-primario  ">
+							<th className="border border-blue-400 ">AGENTE</th>
+							<th className="border border-blue-400">CLIENTE</th>
+							<th className="border border-blue-400">DESCRIPCION</th>
+							<th className="border border-blue-400">FECHA</th>
+						</tr>
+					</thead>
+					<tbody className="overflow-y-scroll">
+						<FilaDatos
+							nombreAgente="Julio"
+							nombreCliente="Jairo Rodriguez"
+							descripcion="Fallo de wifi"
+							fecha={new Date()}
+						/>
+						<FilaDatos
+							nombreAgente="Andy"
+							nombreCliente="Diana Martinez"
+							descripcion="Compra de productos"
+							fecha={new Date()}
+						/>
+					</tbody>
+				</table>
+			</div>
 		</div>
+	);
+}
+interface DatosTabla {
+	nombreAgente: string;
+	nombreCliente: string;
+	descripcion: string;
+	fecha: Date;
+}
+
+function FilaDatos(props: DatosTabla) {
+	return (
+		<tr className="text-xl text-black h-10">
+			<td className="border border-blue-400 pl-5 ">{props.nombreAgente}</td>
+			<td className="border border-blue-400 pl-5">{props.nombreCliente}</td>
+			<td className="border border-blue-400 pl-5">{props.descripcion}</td>
+			<td className="border border-blue-400 pl-5">
+				{props.fecha.toLocaleDateString()}
+			</td>
+		</tr>
 	);
 }

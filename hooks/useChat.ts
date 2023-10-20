@@ -1,15 +1,22 @@
 import { API_HOST } from "@/utils/constants";
+import { PublicAccountData } from "@/utils/functions";
 import { useState } from "react";
 
 import { useWebSocket } from "react-use-websocket/dist/lib/use-websocket";
 
 export interface WSMessage {
 	channel: string;
+	agent_data?: {
+		id: number;
+		first_name: string;
+		last_name: string;
+	};
 	message: GPTMessage;
 }
 
-interface GPTMessage {
-	role: "user" | "assistant" | "system";
+export interface GPTMessage {
+	account_id: number | null;
+	role: "user" | "assistant" | "system" | "agent" | "status";
 	content: string;
 }
 
@@ -22,6 +29,8 @@ export default function useChat({ message_type }: FirstMessageType) {
 	const [messageHistory, setMessageHistory] = useState<WSMessage[]>([]);
 	const [sendButtonEnabled, setSendButtonEnabled] = useState(true);
 	const [defaultChannel, setDefaultChannel] = useState<string>("");
+
+	const [agent, setAgent] = useState<PublicAccountData | null>(null);
 
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
 		`ws://${API_HOST}/chat`,
@@ -42,13 +51,11 @@ export default function useChat({ message_type }: FirstMessageType) {
 							}),
 						);
 						break;
-					case "ChatAgent":
-						console.log(message_type);
-						console.log(
-							"token",
-							sessionStorage.getItem("session"),
-							JSON.parse(sessionStorage.getItem("session") ?? "{}"),
-						);
+					case "ChatAgent": {
+						const token = JSON.parse(sessionStorage.getItem("session") ?? "{}");
+
+						setAgent(token.account ?? null);
+
 						sendMessage(
 							JSON.stringify({
 								message_type,
@@ -57,6 +64,8 @@ export default function useChat({ message_type }: FirstMessageType) {
 								).token,
 							}),
 						);
+						break;
+					}
 				}
 				console.log(message_type);
 			},
@@ -83,12 +92,22 @@ export default function useChat({ message_type }: FirstMessageType) {
 	);
 
 	const handleMessageSubmit = (newMessage: string, uuid: string) => {
+		console.log("Account data", agent);
 		const messageObject: WSMessage = {
 			channel: uuid,
 			message: {
+				account_id: agent?.id ?? null,
 				role: message_type === "ChatAgent" ? "assistant" : "user",
 				content: newMessage,
 			},
+			agent_data:
+				agent !== null
+					? {
+							id: agent.id,
+							first_name: agent.first_name,
+							last_name: agent.last_name,
+					  }
+					: undefined,
 		};
 
 		console.log("messageObject", messageObject);
@@ -112,5 +131,6 @@ export default function useChat({ message_type }: FirstMessageType) {
 		sendButtonEnabled,
 		handleMessageSubmit,
 		channel: defaultChannel,
+		agent,
 	};
 }

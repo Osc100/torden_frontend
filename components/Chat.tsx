@@ -1,13 +1,14 @@
 "use client";
 
-import { WSMessage } from "@/hooks/useChat";
+import { GPTMessage, WSMessage } from "@/hooks/useChat";
 import { FC } from "react";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { GoPeople } from "react-icons/go";
 import WritingMessage from "./WritingMessage";
 
 interface MessageCardProps {
-	author: string;
+	author: GPTMessage["role"];
+	agent_name?: string;
 	content: string;
 	is_user_message: boolean;
 }
@@ -19,7 +20,7 @@ const MessageCard: FC<MessageCardProps> = (props) => {
 				props.is_user_message ? "justify-end" : "justify-start"
 			}`}
 		>
-			<div className="w-3/4">
+			<div className="w-4/5 md:w-3/4">
 				<h4
 					className={`text-white ${
 						props.is_user_message ? "text-right" : "text-left"
@@ -28,7 +29,7 @@ const MessageCard: FC<MessageCardProps> = (props) => {
 					{props.author === "user"
 						? "Tú"
 						: props.author === "agent"
-						? "Agente"
+						? props.agent_name
 						: "Torden"}
 				</h4>
 				<p className="shadow-md bg-white rounded-lg px-3 py-5">
@@ -60,23 +61,24 @@ export default function Chat(props: ChatProps) {
 		handleMessageSubmit,
 		sendButtonEnabled,
 		channel,
+		showAgentControls,
 	} = props;
 
 	return (
 		<div
 			className={`bg-gradient-to-b from-[#03577E] to-[#45ACAF] ${
-				props.noMargin ? "" : "mx-36"
+				props.noMargin ? "" : "xl:mx-36"
 			} rounded-2xl shadow-xl flex`}
 		>
-			<div className="flex-[14] ">
-				<h2 className="text-3xl font-bold flex justify-center mb-4 pt-10 pb-8 text-white">
+			<div className="flex-[20] xl:flex-[14] ">
+				<h2 className="text-2xl xl:text-3xl font-bold flex justify-center mb-4 pt-10 pb-8 pl-5 text-white">
 					{messageHistory.length === 0 && props.showSuggestedQuestions
 						? "PREGUNTAS SUGERIDAS"
 						: props.title}
 				</h2>
 				<div className="h-[45vh] flex flex-col-reverse mx-10 overflow-y-scroll">
 					{messageHistory.length === 0 && props.showSuggestedQuestions ? (
-						<div className="grid grid-cols-2 gap-4">
+						<div className="grid md:grid-cols-2 gap-4">
 							<Pregunta
 								texto="¿Cómo funciona Torden?"
 								onClick={() => {
@@ -119,6 +121,7 @@ export default function Chat(props: ChatProps) {
 								.map((currentMessage, index) => (
 									<MessageCard
 										key={`${index} - message card number}`}
+										agent_name={`${currentMessage.agent_data?.first_name} ${currentMessage.agent_data?.last_name}`}
 										author={currentMessage.message.role}
 										content={currentMessage.message.content}
 										is_user_message={currentMessage.message.role === "user"}
@@ -140,33 +143,43 @@ export default function Chat(props: ChatProps) {
 						<input
 							value={inputMessage}
 							onChange={(e) => setInputMessage(e.target.value)}
-							className="w-full rounded-lg h-16 bg-slate-100 px-4 "
+							className="w-full rounded-lg h-16 bg-slate-100 px-4 mr-6 "
 							disabled={!sendButtonEnabled}
 						/>
+
+						<button
+							type="submit"
+							className="bg-[#03577E] rounded-full  shadow-md mb-10 -ml-3"
+						>
+							<img src="/send.svg" alt="Enviar" className="ml-[-0.35rem]" />
+						</button>
 					</form>
 				</div>
 			</div>
-			<div className="flex-1 flex flex-col">
-				<button type="button" className="">
-					<AiOutlineCloseSquare className="my-8 text-4xl text-white shadow-sm" />
-				</button>
-				<button type="button" className="">
-					<GoPeople className="text-4xl text-white shadow-sm" />
-				</button>
-				<div className="flex-grow" />
-				<button
-					className="bg-[#03577E] rounded-full w-16 h-16 shadow-md mb-10 -ml-3"
-					type="submit"
-					onClick={
-						sendButtonEnabled
-							? () => handleMessageSubmit(inputMessage, channel)
-							: () => {}
-					}
-					disabled={!sendButtonEnabled}
-				>
-					<img src="/send.svg" alt="Enviar" className="ml-[-0.35rem]" />
-				</button>
-			</div>
+
+			{showAgentControls && (
+				<div className="flex-1 flex flex-col">
+					<button type="button" className="">
+						<AiOutlineCloseSquare className="my-8 text-4xl text-white shadow-sm" />
+					</button>
+					<button type="button" className="">
+						<GoPeople className="text-4xl text-white shadow-sm" />
+					</button>
+					<div className="flex-grow" />
+					<button
+						className="bg-[#03577E] rounded-full w-16 h-16 shadow-md mb-10 -ml-3"
+						type="submit"
+						onClick={
+							sendButtonEnabled
+								? () => handleMessageSubmit(inputMessage, channel)
+								: () => {}
+						}
+						disabled={!sendButtonEnabled}
+					>
+						<img src="/send.svg" alt="Enviar" className="ml-[-0.35rem]" />
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }

@@ -35,7 +35,7 @@ export default function Login() {
 					sessionStorage.setItem("session", JSON.stringify(responseData));
 					console.log(sessionStorage.getItem("session"));
 
-					router.push("/dashboard");
+					router.push("/dashboard/chats");
 				});
 			} else {
 				alert("Usuario o contraseña incorrectos");

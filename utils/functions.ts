@@ -18,3 +18,14 @@ export function getRequest(relativeUrl: string) {
 		headers,
 	});
 }
+
+export interface PublicAccountData {
+	id: number;
+	email: string;
+	first_name: string;
+	last_name: string;
+	//role: AccountRole;
+	company_id: number;
+	created: string;
+	exp: number;
+}

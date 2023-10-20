@@ -8,7 +8,7 @@ export default function DashboardLayout({
 		<div className="flex h-screen">
 			<DashboardSideBar />
 			<main className="flex flex-col w-full h-screen bg-[url('../public/fondo_dashboard.jpg')]">
-				{children}
+				<div className="h-full overflow-auto">{children}</div>
 
 				<div className="flex-grow" />
 

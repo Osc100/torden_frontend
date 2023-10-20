@@ -30,8 +30,8 @@ export default function HistorialChatPage() {
 					HISTORIAL DE CHATS
 				</h1>
 			</div>
-			<div className=" px-10">
-				<table className=" bg-slate-50 rounded-xl overflow-y-scroll w-full shadow-xl ">
+			<div className=" overflow-auto px-10">
+				<table className=" bg-slate-50 rounded-xl overflow-auto w-full shadow-xl sticky ">
 					<thead>
 						<tr className="text-xl h-10 text-white bg-primario ">
 							<th className="border border-white">ID</th>
@@ -42,7 +42,7 @@ export default function HistorialChatPage() {
 							<th className="border border-white">FECHA</th>
 						</tr>
 					</thead>
-					<tbody className="overflow-y-scroll">
+					<tbody className="overflow-auto">
 						{chats.map((chat, index) => (
 							<FilaDatos
 								key={`chat row ${index}`}
@@ -79,7 +79,7 @@ interface DatosTabla {
 
 function FilaDatos(props: DatosTabla) {
 	return (
-		<tr className="text-xl text-black h-10">
+		<tr className="text-xl text-black h-10 overflow-auto">
 			<td className="border border-blue-400 pl-5 ">
 				<a
 					href={`/dashboard/historial_chats/${props.id}`}

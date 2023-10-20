@@ -14,13 +14,12 @@ type RecordChatState = Record<string, AgentChatState>;
 const DashboardChatPage: FC = () => {
 	const [chatRecord, setChatRecord] = useState<RecordChatState>({});
 
-	const { messageHistory, handleMessageSubmit } = useChat({
+	const { messageHistory, handleMessageSubmit, agent } = useChat({
 		message_type: "ChatAgent",
 	});
 
 	useEffect(() => {
 		const newChatState: RecordChatState = structuredClone(chatRecord);
-
 		const chatStates = Object.values(newChatState);
 
 		for (const chatState of chatStates) {

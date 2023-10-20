@@ -6,11 +6,10 @@ import { FC } from "react";
 import { IconType } from "react-icons";
 import {
 	FaChartLine,
-	FaHouse,
 	FaMessage,
 	FaPaperclip,
 	FaRightFromBracket,
-	FaUsers,
+	FaUsers
 } from "react-icons/fa6";
 import UserProfile from "./UserProfile";
 
@@ -51,7 +50,7 @@ const DashboardSideBar: FC = () => {
 
 			<div className="mt-24" />
 
-			<DashboardItem name="Home" Icon={FaHouse} href={"/dashboard"} />
+			{/* <DashboardItem name="Home" Icon={FaHouse} href={"/dashboard"} /> */}
 			<DashboardItem name="Chats" Icon={FaMessage} href={"/dashboard/chats"} />
 			<DashboardItem
 				name="Estadísticas"

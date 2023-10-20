@@ -3,7 +3,7 @@ import HomeChat from "@/components/HomeChat";
 export default function Home() {
 	return (
 		<div>
-			<nav className="h-24 bg-slate-100 flex justify-between fixed w-full">
+			<nav className="h-24 bg-slate-100 hidden sm:flex justify-between fixed w-full z-10">
 				<div>
 					<img
 						src="logoTorden.png"
@@ -20,13 +20,13 @@ export default function Home() {
 			</nav>
 			<div
 				id="inicio"
-				className="pt-24 flex justify-center w-full bg-gradient-to-b from-[#45ACAF] via-white to-[#45ACAF] px-[12%] "
+				className="pt-4 sm:pt-24 flex justify-center w-full bg-gradient-to-b from-[#45ACAF] via-white to-[#45ACAF] px-4 xl:px-[12%] "
 			>
 				<div>
-					<h1 className="text-5xl font-extrabold text-white flex justify-center pt-10">
+					<h1 className="text-3xl md:text-5xl font-extrabold text-white flex text-center justify-center pt-10">
 						Puedes preguntar de nuestro servicio a nuestra IA
 					</h1>
-					<p className="text-2xl text-white flex justify-center mx-20 p-10 text-center font-semibold">
+					<p className="text-2xl text-white flex justify-center mx-4 xl:mx-20  py-10 px-2 md:px-10 text-justify md:text-center font-semibold">
 						¡Bienvenidos a nuestro mundo de innovación y automatización del
 						servicio al cliente! <br />
 						En nuestra empresa, nos apasiona llevar la atención al cliente a un
@@ -35,14 +35,14 @@ export default function Home() {
 					</p>
 
 					<HomeChat />
-					<div className="flex">
+					<div className="grid md:grid-cols-2 mx-5 md:mx-0 items-center py-24 xl:py-24">
 						<img
 							src="hombre_computadora.png"
 							alt="Hombre en escritorio"
-							className="w-1/2 p-[10%]"
+							className=" "
 						/>
-						<div className="w-1/2">
-							<h2 className="text-4xl font-bold text-black mt-36 pb-10">
+						<div>
+							<h2 className="text-4xl font-bold text-black pt-6 md:pt-0">
 								FUNCIONAMIENTO
 							</h2>
 							<ul className="text-2xl text-left list-disc">
@@ -86,15 +86,15 @@ export default function Home() {
 					>
 						NOSOTROS
 					</h2>
-					<div className="grid grid-cols-2 mb-20 pt-20 gap-y-14">
-						<Cajita
+					<div className="grid xl:grid-cols-2 mb-20 pt-20 gap-y-14">
+						<AboutBox
 							src="Agner.jpeg"
 							rol="Diseñador"
 							nombre="Agner Somoza "
 							descripcion="Creativo diseñador que transforma ideas en realidad visual. Su talento radica en dar forma a conceptos abstractos y convertirlos en diseños atractivos y funcionales que cautivan al público."
 						/>
 
-						<Cajita
+						<AboutBox
 							src="Kelly.jpeg"
 							rol="Mercadológa"
 							nombre="Kelly Meneses"
@@ -104,7 +104,7 @@ export default function Home() {
 						/>
 
 						<div className="flex justify-end w-full">
-							<Cajita
+							<AboutBox
 								src="Oscar.jpeg"
 								rol="Desarrollador"
 								nombre="Oscar Marín"
@@ -115,7 +115,7 @@ export default function Home() {
 						</div>
 
 						<div className="flex justify-end w-full">
-							<Cajita
+							<AboutBox
 								src="Katherine.jpeg"
 								rol="Desarrolladora"
 								nombre="Katherine Cundano"
@@ -141,30 +141,32 @@ export default function Home() {
 	);
 }
 
-interface CajitaProps {
+interface AboutBoxProps {
 	src: string;
 	nombre: string;
 	rol: string;
 	descripcion: string;
 }
 
-function Cajita(props: CajitaProps) {
+function AboutBox(props: AboutBoxProps) {
 	return (
-		<div className="w-[70%] ">
-			<div className=" w-48 h-48 rounded-full bg-[#45ACAF] absolute z-10 -ml-16 -mt-10 shadow-xl ">
+		<div className="w-full md:w-[70%] ">
+			<div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#45ACAF] absolute z-10 -ml-16 -mt-10 shadow-xl ">
 				<img
 					src={props.src}
 					alt={props.rol}
-					className="w-48 h-48 rounded-full"
+					className="w-32 h-32  md:w-48 md:h-48 rounded-full"
 				/>
 			</div>
-			<div className="w-full h-80 bg-[#03577B] rounded-md shadow-2xl ">
+			<div className="w-full h-96 lg:h-80 xl:h-96 2xl:h-80 bg-[#03577B] rounded-md shadow-2xl ">
 				<h2 className=" text-center text-3xl text-white mx-3 pt-16 font-semibold">
 					{props.rol}
 				</h2>
 
-				<p className=" text-center mb-8 text-2xl text-white ">{props.nombre}</p>
-				<p className="text-white text-xl text-justify mx-5">
+				<p className=" text-center mb-8 text-xl md:text-2xl text-white ">
+					{props.nombre}
+				</p>
+				<p className="text-white text-lg xs:text-xl text-justify mx-5">
 					{props.descripcion}
 				</p>
 			</div>
@@ -181,7 +183,7 @@ function BotonNavBar(props: Botonprops) {
 		<a href={props.href}>
 			<button
 				type="button"
-				className="p-4 rounded-2xl  hover:bg-[#03577B] hover:text-white shadow-xl mr-6 mt-3 text-xl text-black font-bold  transition-colors duration-500 "
+				className="p-1 sm:p-4 rounded-2xl  hover:bg-[#03577B] hover:text-white shadow-xl xl:mr-6 mt-3 text-xl text-black font-bold  transition-colors duration-500 "
 			>
 				{props.texto}
 			</button>

@@ -4,6 +4,7 @@ import { WSMessage } from "@/hooks/useChat";
 import { FC } from "react";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { GoPeople } from "react-icons/go";
+import WritingMessage from "./WritingMessage";
 
 interface MessageCardProps {
 	author: string;
@@ -108,17 +109,22 @@ export default function Chat(props: ChatProps) {
 							/>
 						</div>
 					) : (
-						messageHistory
-							.slice()
-							.reverse()
-							.map((currentMessage, index) => (
-								<MessageCard
-									key={`${index} - message card number}`}
-									author={currentMessage.message.role}
-									content={currentMessage.message.content}
-									is_user_message={currentMessage.message.role === "user"}
-								/>
-							))
+						<>
+							{messageHistory.at(-1)?.message.role === "user" ? (
+								<WritingMessage />
+							) : null}
+							{messageHistory
+								.slice()
+								.reverse()
+								.map((currentMessage, index) => (
+									<MessageCard
+										key={`${index} - message card number}`}
+										author={currentMessage.message.role}
+										content={currentMessage.message.content}
+										is_user_message={currentMessage.message.role === "user"}
+									/>
+								))}
+						</>
 					)}
 				</div>
 				<div className=" justify-center">

@@ -33,7 +33,7 @@ export default function Home() {
 						nuevo nivel utilizando la poderosa tecnología del modelo de lenguaje
 						natural GPT-3.5 de OpenAI.
 					</p>
-					
+
 					<HomeChat />
 					<div className="flex">
 						<img
@@ -57,7 +57,7 @@ export default function Home() {
 								</li>
 							</ul>
 						</div>
-					H</div>
+					</div>
 				</div>
 			</div>
 			<div

@@ -37,7 +37,10 @@ const data = {
 			data: [12, 19, 3, 5, 10, 12, 15],
 			backgroundColor: "rgba(117, 183, 192, 0.5)", // Color de fondo de las barras
 			borderColor: "rgba(75, 192, 192, 1)", // Color del borde de las barras
-			borderWidth: 1, // Ancho del borde de las barras
+			barThickness: 17,
+			borderWidth: 1,
+			borderRadius: 100,
+			// Ancho del borde de las barras
 		},
 	],
 };
@@ -53,8 +56,8 @@ export const options = {
 
 function WeekBarChart() {
 	return (
-		<div className="w-1/2 mx-auto">
-			<Bar data={data} options={options} />
+		<div className="px-5">
+			<Bar data={data} options={options} height={100} />
 		</div>
 	);
 }

@@ -37,8 +37,8 @@ interface CuadroEstadisticaProps {
 
 function CuadroEstadistica(props: CuadroEstadisticaProps) {
 	return (
-		<div className="h-full w-full shadow-2xl text-xl bg-slate-100 rounded-lg ">
-			<div className="text-2xl font-medium items-center flex justify-center my-8">
+		<div className="h-full w-full shadow-2xl text-xl bg-primario rounded-lg ">
+			<div className="text-2xl text-white font-medium items-center flex justify-center my-8">
 				{props.nombre}
 			</div>
 			<div>
@@ -73,7 +73,9 @@ function CuadroEstadistica(props: CuadroEstadisticaProps) {
 						<AiFillCaretRight />
 					</button>
 				</div>
-				<MonthBarChart />
+				<div>
+					<MonthBarChart />
+				</div>
 			</div>
 		</div>
 	);

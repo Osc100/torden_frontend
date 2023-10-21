@@ -67,7 +67,8 @@ export default function Chat(props: ChatProps) {
 										texto="¿Cómo funciona Torden?"
 										onClick={() =>
 											handleMessageSubmit(
-												"¿A quiénes estamos dirigidos?",
+												"¿Cómo funciona Torden?",
+
 												channel,
 											)
 										}

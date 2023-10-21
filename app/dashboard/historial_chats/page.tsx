@@ -7,13 +7,31 @@ interface Chat {
 	id: string;
 	created: string;
 	company_id: number;
-	agents?: string[] | null; // Uncomment and import GPTMessage if needed
 	ai_description?: string | null;
 	client_name?: string | null;
+	account_id?: string | null | string[];
+}
+
+interface Company {
+	id: number;
+	name: string;
+}
+
+interface DBUser {
+	id: number;
+	first_name: string;
+	last_name: string;
+	company_id: number;
 }
 
 export default function HistorialChatPage() {
 	const [chats, setChats] = useState<Chat[]>([]);
+
+	const [companies, setCompanies] = useState<Company[]>([]);
+
+	const [acc, setAcc] = useState<string>();
+
+	const newChats: Record<number, Chat> = {};
 
 	useEffect(() => {
 		getRequest("history").then((response) => {
@@ -21,6 +39,24 @@ export default function HistorialChatPage() {
 				setChats(data.slice().reverse());
 			});
 		});
+
+		getRequest("companies").then((response) => {
+			response.json().then((data) => {
+				setCompanies(data);
+			});
+		});
+
+		const session = JSON.parse(localStorage.getItem("session") ?? "{}");
+
+		if (session) {
+			setAcc(`${session.first_name} ${session.last_name}`);
+		}
+
+		// getRequest("agents").then((response) => {
+		// 	response.json().then((data) => {
+		// 		setAgents(data);
+		// 	});
+		// });
 	}, []);
 
 	return (
@@ -43,25 +79,25 @@ export default function HistorialChatPage() {
 						</tr>
 					</thead>
 					<tbody className="overflow-auto">
-						{chats.map((chat, index) => (
-							<FilaDatos
-								key={`chat row ${index}`}
-								id={chat.id}
-								compañia={
-									chat.company_id === 1 ? "Torden" : chat.company_id.toString()
-								}
-								nombreAgente={
-									chat.company_id === 1 ? "Torden" : chat.company_id.toString()
-								}
-								nombreCliente={
-									chat.company_id === 1 ? "Torden" : chat.company_id.toString()
-								}
-								descrpcion={
-									chat.company_id === 1 ? "Torden" : chat.company_id.toString()
-								}
-								fecha={new Date(chat.created)}
-							/>
-						))}
+						{chats.map((chat, index) => {
+							return (
+								<FilaDatos
+									key={`chat row ${index}`}
+									id={chat.id}
+									compañia={
+										companies.find((company) => company.id === chat.company_id)
+											?.name ?? "Torden"
+									}
+									nombreAgente={acc ?? "Test"}
+									nombreCliente={
+										companies.find((company) => company.id === chat.company_id)
+											?.name ?? "Not found"
+									}
+									descripcion={chat.ai_description ?? "Not yet generated"}
+									fecha={new Date(chat.created)}
+								/>
+							);
+						})}
 					</tbody>
 				</table>
 			</div>
@@ -73,7 +109,7 @@ interface DatosTabla {
 	compañia: string;
 	nombreAgente: string;
 	nombreCliente: string;
-	descrpcion: string;
+	descripcion: string;
 	fecha: Date;
 }
 
@@ -91,7 +127,7 @@ function FilaDatos(props: DatosTabla) {
 			<td className="border border-blue-400 pl-5">{props.compañia}</td>
 			<td className="border border-blue-400 pl-5">{props.nombreAgente}</td>
 			<td className="border border-blue-400 pl-5">{props.nombreCliente}</td>
-			<td className="border border-blue-400 pl-5">{props.descrpcion}</td>
+			<td className="border border-blue-400 pl-5">{props.descripcion}</td>
 
 			<td className="border border-blue-400 pl-5">
 				{props.fecha.toLocaleDateString()}

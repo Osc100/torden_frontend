@@ -4,10 +4,28 @@ const headers = {
 	"Content-Type": "application/json",
 } as const;
 
+function getAuthHeader() {
+	const token = JSON.parse(sessionStorage.getItem("session") ?? "{}").token;
+
+	console.log("HeaderToken", token);
+
+	if (token) {
+		return {
+			...headers,
+			Authorization: `Bearer ${token}`,
+		};
+	}
+
+	return {};
+}
+
 export function postRequest(relativeUrl: string, body: BodyInit) {
 	return fetch(`${API_URL}/${relativeUrl}`, {
 		method: "POST",
-		headers,
+		headers: {
+			...headers,
+			...getAuthHeader(),
+		},
 		body,
 	});
 }
@@ -15,7 +33,10 @@ export function postRequest(relativeUrl: string, body: BodyInit) {
 export function getRequest(relativeUrl: string) {
 	return fetch(`${API_URL}/${relativeUrl}`, {
 		method: "GET",
-		headers,
+		headers: {
+			...headers,
+			...getAuthHeader(),
+		},
 	});
 }
 

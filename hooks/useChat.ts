@@ -1,4 +1,4 @@
-import { API_HOST } from "@/utils/constants";
+import { API_HOST, WS_PROTOCOL } from "@/utils/constants";
 import { PublicAccountData } from "@/utils/functions";
 import { useState } from "react";
 
@@ -33,14 +33,9 @@ export default function useChat({ message_type }: FirstMessageType) {
 	const [agent, setAgent] = useState<PublicAccountData | null>(null);
 
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
-		`ws://${API_HOST}/chat`,
+		`${WS_PROTOCOL}://${API_HOST}/chat`,
 		{
 			onOpen: () => {
-				// let uuid = sessionStorage.getItem("uuid");
-				// if (uuid) {
-				//   sendMessage(uuid);
-				// } else {
-				//
 				switch (message_type) {
 					case "NewUUID":
 					case "ExistingUUID":
@@ -93,11 +88,13 @@ export default function useChat({ message_type }: FirstMessageType) {
 
 	const handleMessageSubmit = (newMessage: string, uuid: string) => {
 		console.log("Account data", agent);
+		console.log("account id", agent?.id);
+
 		const messageObject: WSMessage = {
 			channel: uuid,
 			message: {
 				account_id: agent?.id ?? null,
-				role: message_type === "ChatAgent" ? "assistant" : "user",
+				role: message_type === "ChatAgent" ? "agent" : "user",
 				content: newMessage,
 			},
 			agent_data:

@@ -1,15 +1,15 @@
 "use client";
 
 import Chat from "@/components/Chat";
-import HomeChat from "@/components/HomeChat";
 import useChat from "@/hooks/useChat";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import { LiaClockSolid } from "react-icons/lia";
 import { BsPinFill } from "react-icons/bs";
 import { FaPeopleGroup } from "react-icons/fa6";
+import { LiaClockSolid } from "react-icons/lia";
 
 export default function Dashboard() {
 	const chatProps = useChat({ message_type: "NewUUID" });
+
 	return (
 		<div>
 			<div className="pt-8">
@@ -26,7 +26,7 @@ export default function Dashboard() {
 				/>
 			</div>
 			<div className=" grid md:grid-cols-2 mx-5 md:mx-0  py-10 xl:py-10">
-				<div>
+				<div className="mx-10">
 					<div className="text-2xl shadow-2xl font-semibold h-14 mx-32  bg-primario flex justify-center items-center rounded-full my-10">
 						<h2 className="shadow-sm text-white hover:text-[#45ACAF] transition-colors duration-500 ">
 							¿CÓMO USAR TORDEN?

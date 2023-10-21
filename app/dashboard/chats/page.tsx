@@ -41,7 +41,7 @@ const DashboardChatPage: FC = () => {
 	}, [messageHistory]);
 
 	return (
-		<div className="grid grid-cols-2 overflow-y-scroll p-8 gap-8">
+		<div className="grid lg:grid-cols-2 overflow-y-scroll p-8 gap-8">
 			{Object.entries(chatRecord).map(([channel, chatState], index) => {
 				return (
 					<Chat

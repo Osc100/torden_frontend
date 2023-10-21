@@ -90,12 +90,23 @@ export default function Login() {
 
 					<LoginSelect
 						{...register("role", { required: true })}
+						choices={[
+							{ value: "agent", label: "Agente" },
+							{ value: "manager", label: "Supervisor" },
+							{ value: "superuser", label: "Administrador" },
+						]}
 						type="text"
 						placeholder="Rol"
 						errorMessage={errors.role?.message}
 						Icon={AiFillControl}
 					/>
 					<LoginSelect
+						choices={[
+							{
+								value: 1,
+								label: "Empresa 1",
+							},
+						]}
 						{...register("company_id", { required: true, valueAsNumber: true })}
 						type="number"
 						placeholder="Compañía"

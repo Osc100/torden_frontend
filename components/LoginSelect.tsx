@@ -6,10 +6,14 @@ import { IconType } from "react-icons";
 interface LoginInputProps extends React.HTMLProps<HTMLSelectElement> {
 	Icon: IconType;
 	errorMessage?: string;
+	choices: {
+		value: string | number;
+		label: string;
+	}[];
 }
 const LoginInput = React.forwardRef<HTMLSelectElement, LoginInputProps>(
 	(props, ref) => {
-		const { Icon, errorMessage, ...rest } = props;
+		const { Icon, errorMessage, choices, ...rest } = props;
 
 		return (
 			<div className="mb-10 ">
@@ -25,10 +29,13 @@ const LoginInput = React.forwardRef<HTMLSelectElement, LoginInputProps>(
 						className="text-white bg-primario "
 						{...rest}
 					>
-						<option value="volvo">Volvo</option>
-						<option value="saab">Saab</option>
-						<option value="mercedes">Mercedes</option>
-						<option value="audi">Audi</option>
+						{choices.map(({ value, label }, index) => {
+							return (
+								<option value={value} key={`${index} ${value}`}>
+									{label}
+								</option>
+							);
+						})}
 					</select>
 				</div>
 

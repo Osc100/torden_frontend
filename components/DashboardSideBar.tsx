@@ -1,5 +1,6 @@
 "use client";
 
+import useAccount from "@/hooks/useAccount";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
@@ -39,13 +40,15 @@ const DashboardItem: FC<DashboardItemProps> = (props) => {
 };
 
 const DashboardSideBar: FC = () => {
+	const agent = useAccount();
+
 	return (
 		<aside className="w-[20%] flex flex-col items-center bg-white h-screen">
 			<img src="/logoTorden.png" alt="Logo de Torden" className="h-24 mt-5 " />
 
 			<UserProfile
-				src="/Katherine.jpeg"
-				name="Katherine Cundano"
+				src={`/${agent?.first_name}.jpeg`}
+				name={agent ? `${agent?.first_name} ${agent?.last_name}` : "Loading..."}
 				role="Agente"
 			/>
 

@@ -3,8 +3,8 @@
 import { WSMessage } from "@/hooks/useChat";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { GoPeople } from "react-icons/go";
+import { ThreeDots } from "react-loader-spinner";
 import MessageCard from "./MessageCard";
-import WritingMessage from "./WritingMessage";
 
 interface ChatProps {
 	title: string;
@@ -46,7 +46,7 @@ export default function Chat(props: ChatProps) {
 				</h2>
 				<div className="h-[45vh] flex flex-col-reverse mx-10 overflow-y-scroll">
 					{messageHistory.length === 0 && props.showSuggestedQuestions ? (
-						<div className="grid md:grid-cols-2 gap-4">
+						<div className="grid 2xl:grid-cols-2 gap-4">
 							{preguntas ? (
 								preguntas.map((pregunta, index) => {
 									return (
@@ -106,7 +106,7 @@ export default function Chat(props: ChatProps) {
 					) : (
 						<>
 							{messageHistory.at(-1)?.message.role === "user" ? (
-								<WritingMessage />
+								<ThreeDots color="white" />
 							) : null}
 							{messageHistory
 								.slice()
@@ -125,7 +125,7 @@ export default function Chat(props: ChatProps) {
 				</div>
 				<div className=" justify-center">
 					<form
-						className="flex px-10 py-5"
+						className="flex pl-10 pr-0 py-5"
 						onSubmit={(e) => {
 							e.preventDefault();
 							if (sendButtonEnabled) {
@@ -142,7 +142,9 @@ export default function Chat(props: ChatProps) {
 
 						<button
 							type="submit"
-							className="bg-[#03577E] rounded-full  shadow-md mb-10 -ml-3"
+							className={`bg-[#03577E] rounded-full  shadow-md mb-10 -ml-3 ${
+								showAgentControls ? "hidden" : ""
+							}`}
 						>
 							<img src="/send.svg" alt="Enviar" className="ml-[-0.35rem]" />
 						</button>
@@ -151,7 +153,7 @@ export default function Chat(props: ChatProps) {
 			</div>
 
 			{showAgentControls && (
-				<div className="flex-1 flex flex-col">
+				<div className="flex-1 flex flex-col items-baseline justify-center">
 					<button type="button" className="">
 						<AiOutlineCloseSquare className="my-8 text-4xl text-white shadow-sm" />
 					</button>
@@ -160,7 +162,7 @@ export default function Chat(props: ChatProps) {
 					</button>
 					<div className="flex-grow" />
 					<button
-						className="bg-[#03577E] rounded-full w-16 h-16 shadow-md mb-10 -ml-3"
+						className="bg-[#03577E] rounded-full w-16 h-16 shadow-md mb-6 mr-auto"
 						type="submit"
 						onClick={
 							sendButtonEnabled
@@ -169,7 +171,7 @@ export default function Chat(props: ChatProps) {
 						}
 						disabled={!sendButtonEnabled}
 					>
-						<img src="/send.svg" alt="Enviar" className="ml-[-0.35rem]" />
+						<img src="/send.svg" alt="Enviar" className="pr-2" />
 					</button>
 				</div>
 			)}

@@ -14,6 +14,7 @@ interface ChatProps {
 	messageHistory: WSMessage[];
 	handleMessageSubmit: (message: string, channel: string) => void;
 	channel: string;
+	preguntas?: string[];
 	sendButtonEnabled?: boolean;
 	showAgentControls?: boolean;
 	noMargin?: boolean;
@@ -27,6 +28,7 @@ export default function Chat(props: ChatProps) {
 		handleMessageSubmit,
 		sendButtonEnabled,
 		channel,
+		preguntas,
 		showAgentControls,
 	} = props;
 
@@ -45,36 +47,61 @@ export default function Chat(props: ChatProps) {
 				<div className="h-[45vh] flex flex-col-reverse mx-10 overflow-y-scroll">
 					{messageHistory.length === 0 && props.showSuggestedQuestions ? (
 						<div className="grid md:grid-cols-2 gap-4">
-							<Pregunta
-								texto="¿Cómo funciona Torden?"
-								onClick={() => {
-									console.log("¿Cómo funciona Torden?");
-									handleMessageSubmit("¿Cómo funciona Torden?", channel);
-								}}
-								disabled={!sendButtonEnabled}
-							/>
-							<Pregunta
-								texto="¿A quiénes estamos dirigidos?"
-								onClick={() =>
-									handleMessageSubmit("¿A quiénes estamos dirigidos?", channel)
-								}
-								disabled={!sendButtonEnabled}
-							/>
-							<Pregunta
-								texto="¿Qué es Torden?"
-								onClick={() => handleMessageSubmit("¿Qué es Torden?", channel)}
-								disabled={!sendButtonEnabled}
-							/>
-							<Pregunta
-								texto="Me gustaría contactarme con Torden"
-								onClick={() =>
-									handleMessageSubmit(
-										"Me gustaría contactarme con Torden",
-										channel,
-									)
-								}
-								disabled={!sendButtonEnabled}
-							/>
+							{preguntas ? (
+								preguntas.map((pregunta, index) => {
+									return (
+										<Pregunta
+											texto={pregunta}
+											key={`Preguntaaa ${index}`}
+											onClick={() => {
+												console.log(pregunta);
+												handleMessageSubmit(pregunta, channel);
+											}}
+											disabled={!sendButtonEnabled}
+										/>
+									);
+								})
+							) : (
+								<>
+									<Pregunta
+										texto="¿Cómo funciona Torden?"
+										onClick={() =>
+											handleMessageSubmit(
+												"¿A quiénes estamos dirigidos?",
+												channel,
+											)
+										}
+										disabled={!sendButtonEnabled}
+									/>
+									<Pregunta
+										texto="¿A quiénes estamos dirigidos?"
+										onClick={() =>
+											handleMessageSubmit(
+												"¿A quiénes estamos dirigidos?",
+												channel,
+											)
+										}
+										disabled={!sendButtonEnabled}
+									/>
+									<Pregunta
+										texto="¿Qué es Torden?"
+										onClick={() =>
+											handleMessageSubmit("¿Qué es Torden?", channel)
+										}
+										disabled={!sendButtonEnabled}
+									/>
+									<Pregunta
+										texto="Me gustaría contactarme con Torden"
+										onClick={() =>
+											handleMessageSubmit(
+												"Me gustaría contactarme con Torden",
+												channel,
+											)
+										}
+										disabled={!sendButtonEnabled}
+									/>
+								</>
+							)}
 						</div>
 					) : (
 						<>
@@ -98,7 +125,7 @@ export default function Chat(props: ChatProps) {
 				</div>
 				<div className=" justify-center">
 					<form
-						className="flex px-10 p-10"
+						className="flex px-10 py-5"
 						onSubmit={(e) => {
 							e.preventDefault();
 							if (sendButtonEnabled) {

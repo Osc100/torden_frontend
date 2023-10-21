@@ -35,8 +35,9 @@ const data = {
 		{
 			label: "Chats supervisados",
 			data: [12, 19, 3, 5, 10, 12, 15],
-			backgroundColor: "rgba(117, 183, 192, 0.5)", // Color de fondo de las barras
-			borderColor: "rgba(75, 192, 192, 1)", // Color del borde de las barras
+			textColor: "white",
+			backgroundColor: "rgba(69, 172, 175, 0.5)", // Color de fondo de las barras
+			borderColor: "rgba(69, 172, 175, 0.5)", // Color del borde de las barras
 			barThickness: 17,
 			borderWidth: 1,
 			borderRadius: 100,
@@ -50,6 +51,28 @@ export const options = {
 	plugins: {
 		legend: {
 			position: "top" as const,
+			labels: {
+				color: "white",
+			},
+		},
+	},
+	scales: {
+		y: {
+			beginAtZero: true,
+			ticks: {
+				color: "white", // Cambia el color de las marcas de escala en el eje Y
+			},
+			grid: {
+				color: "white",
+			},
+		},
+		x: {
+			grid: {
+				color: "white",
+			},
+			ticks: {
+				color: "white", // Cambia el color de las marcas de escala en el eje X
+			},
 		},
 	},
 };

@@ -27,6 +27,7 @@ const data = {
 		{
 			label: "Chats supervisados",
 			data: [12, 19, 3, 5],
+			textColor: "white",
 			backgroundColor: "rgba(69, 172, 175, 0.5)", // Color de fondo de las barras
 			borderColor: "rgba(69, 172, 175, 0.5)", // Color del borde de las barras
 			borderWidth: 1,
@@ -41,6 +42,29 @@ export const options = {
 	plugins: {
 		legend: {
 			position: "top" as const,
+			color: "white",
+			labels: {
+				color: "white",
+			},
+		},
+	},
+	scales: {
+		y: {
+			beginAtZero: true,
+			ticks: {
+				color: "white", // Cambia el color de las marcas de escala en el eje Y
+			},
+			grid: {
+				color: "white",
+			},
+		},
+		x: {
+			grid: {
+				color: "white",
+			},
+			ticks: {
+				color: "white", // Cambia el color de las marcas de escala en el eje X
+			},
 		},
 	},
 };
@@ -48,7 +72,7 @@ export const options = {
 function MonthBarChart() {
 	return (
 		<div className="px-5">
-			<Bar data={data} options={options} height={100} />
+			<Bar data={data} options={options} height={90} />
 		</div>
 	);
 }

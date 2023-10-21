@@ -28,13 +28,13 @@ interface EstadisticaSemanalProps {
 function EstadisticaSemanal(props: EstadisticaSemanalProps) {
 	return (
 		<div>
-			<div className="h-full w-full shadow-2xl text-xl bg-slate-100 rounded-lg pt-5 ">
+			<div className="h-full w-full shadow-2xl text-xl bg-primario rounded-lg pt-5 ">
 				<div className="flex flex-col  px-5 w-1/2 mx-auto font-medium">
-					<div className=" text-white bg-primario flex justify-center items-center rounded-xl  shadow-xl ">
+					<div className=" text-primario bg-secundario flex justify-center items-center rounded-xl  shadow-xl ">
 						{" "}
 						{props.numero}
 					</div>
-					<div className=" text-white bg-primario flex justify-center items-center rounded-xl my-5 shadow-xl ">
+					<div className=" text-primario bg-secundario flex justify-center items-center rounded-xl my-5 shadow-xl ">
 						{props.semana}
 					</div>
 				</div>

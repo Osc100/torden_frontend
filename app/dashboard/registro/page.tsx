@@ -1,6 +1,7 @@
 "use client";
 
 import LoginInput from "@/components/LoginInput";
+import LoginSelect from "@/components/LoginSelect";
 import { postRequest } from "@/utils/functions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -87,14 +88,14 @@ export default function Login() {
 						Icon={AiFillEdit}
 					/>
 
-					<LoginInput
+					<LoginSelect
 						{...register("role", { required: true })}
 						type="text"
 						placeholder="Rol"
 						errorMessage={errors.role?.message}
 						Icon={AiFillControl}
 					/>
-					<LoginInput
+					<LoginSelect
 						{...register("company_id", { required: true, valueAsNumber: true })}
 						type="number"
 						placeholder="Compañía"

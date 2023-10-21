@@ -44,7 +44,7 @@ function CuadroEstadistica(props: CuadroEstadisticaProps) {
 			<div>
 				<div className="flex justify-center px-3 my-5">
 					<button type="button">
-						<AiFillCaretLeft />
+						<AiFillCaretLeft className="text-white" />
 					</button>
 
 					<a href="/dashboard/stats/weekly/">
@@ -57,20 +57,20 @@ function CuadroEstadistica(props: CuadroEstadisticaProps) {
 					</a>
 
 					<button type="button">
-						<AiFillCaretRight />
+						<AiFillCaretRight className="text-white" />
 					</button>
 				</div>
 
 				<div className="flex justify-center  px-3  pb-5">
 					<button type="button">
-						<AiFillCaretLeft />
+						<AiFillCaretLeft className="text-white" />
 					</button>
 
 					<div className="text-white bg-secundario flex justify-center items-center rounded-xl px-5 shadow-xl ">
 						{props.año}
 					</div>
 					<button type="button">
-						<AiFillCaretRight />
+						<AiFillCaretRight className="text-white" />
 					</button>
 				</div>
 				<div>

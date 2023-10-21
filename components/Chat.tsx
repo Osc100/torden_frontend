@@ -126,7 +126,7 @@ export default function Chat(props: ChatProps) {
 				</div>
 				<div className=" justify-center">
 					<form
-						className="flex pl-10 pr-0 py-5"
+						className="flex pl-10 md:pr-10 py-5"
 						onSubmit={(e) => {
 							e.preventDefault();
 							if (sendButtonEnabled) {

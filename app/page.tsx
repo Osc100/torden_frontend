@@ -87,22 +87,6 @@ export default function Home() {
 						NOSOTROS
 					</h2>
 					<div className="grid xl:grid-cols-2 mb-20 pt-20 gap-y-14">
-						<AboutBox
-							src="Agner.jpeg"
-							rol="Diseñador"
-							nombre="Agner Somoza "
-							descripcion="Creativo diseñador que transforma ideas en realidad visual. Su talento radica en dar forma a conceptos abstractos y convertirlos en diseños atractivos y funcionales que cautivan al público."
-						/>
-
-						<AboutBox
-							src="Kelly.jpeg"
-							rol="Mercadológa"
-							nombre="Kelly Meneses"
-							descripcion="Estratega de marketing apasionada por encontrar formas innovadoras de conectar con nuestra audiencia. Su creatividad y enfoque en resultados nos ayudan a llegar a más personas y hacer que nuestro mensaje destaque.
-
-              "
-						/>
-
 						<div className="flex justify-end w-full">
 							<AboutBox
 								src="Oscar.jpeg"
@@ -151,11 +135,11 @@ interface AboutBoxProps {
 function AboutBox(props: AboutBoxProps) {
 	return (
 		<div className="w-full md:w-[70%] ">
-			<div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#45ACAF] absolute z-10 -ml-16 -mt-10 shadow-xl ">
+			<div className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-[#45ACAF] absolute z-10 -ml-20 -mt-10 shadow-xl ">
 				<img
 					src={props.src}
 					alt={props.rol}
-					className="w-32 h-32  md:w-48 md:h-48 rounded-full"
+					className="w-32 h-32 md:w-48 md:h-48 rounded-full"
 				/>
 			</div>
 			<div className="w-full h-96 lg:h-80 xl:h-96 2xl:h-80 bg-[#03577B] rounded-md shadow-2xl ">

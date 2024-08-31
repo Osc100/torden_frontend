@@ -13,11 +13,8 @@ import { z } from "zod";
 const RegisterSchema = z.object({
 	first_name: z.string({ required_error: "Requerido" }),
 	last_name: z.string({ required_error: "Requerido" }),
-	role: z.enum(["agent", "manager", "superuser"], {
-		required_error: "Requerido",
-		invalid_type_error: "Tipo de usuario inválido",
-	}),
-	company_id: z.number({ required_error: "Requerido" }).min(1),
+	role: z.enum(["agent", "manager", "superuser"]).optional(),
+	company_id: z.number({ required_error: "Requerido" }).min(1).optional(),
 	email: z
 		.string({ required_error: "Requerido" })
 		.email({ message: "Correo electrónico inválido." }),
@@ -38,15 +35,31 @@ export default function Login() {
 	});
 
 	const onSubmit = handleSubmit((data) => {
-		postRequest("register", JSON.stringify(data)).then((res) => {
-			if (res.status === 200) {
-				alert(
-					"Usuario registrado exitosamente, ya se puede iniciar sesión con el nuevo usuario.",
-				);
-			} else {
-				console.log(res.json().then((data) => {}));
-			}
-		});
+		const finalData = {
+			...data,
+			confirm_password: data.password,
+			role: "agent",
+			company_id: 1,
+		};
+		console.log("finalData", finalData);
+		console.log("json", JSON.parse(JSON.stringify(finalData)));
+
+		postRequest("register", JSON.stringify(finalData))
+			// .then((res) => {
+			// 	console.log(res.headers.get("Content-Type")); // Check the content type of the response
+			// 	console.log(res.text());
+			// 	return res.text(); // Read the response as text first
+			// })
+			.then((res) => {
+				if (res.status === 200) {
+					alert(
+						"Usuario registrado exitosamente, ya se puede iniciar sesión con el nuevo usuario.",
+					);
+					console.log(res.text());
+				} else {
+					console.log(res.text().then((data) => {}));
+				}
+			});
 	});
 
 	return (
@@ -89,7 +102,7 @@ export default function Login() {
 					/>
 
 					<LoginSelect
-						{...register("role", { required: true })}
+						{...register("role")}
 						choices={[
 							{ value: "agent", label: "Agente" },
 							{ value: "manager", label: "Supervisor" },
@@ -107,7 +120,7 @@ export default function Login() {
 								label: "Empresa 1",
 							},
 						]}
-						{...register("company_id", { required: true, valueAsNumber: true })}
+						{...register("company_id")}
 						type="number"
 						placeholder="Compañía"
 						value={1}

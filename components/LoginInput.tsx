@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { IconType } from "react-icons";
+import type { IconType } from "react-icons";
 
 interface LoginInputProps extends React.HTMLProps<HTMLInputElement> {
 	Icon: IconType;
 	errorMessage?: string;
 }
+
 const LoginInput = React.forwardRef<HTMLInputElement, LoginInputProps>(
 	(props, ref) => {
 		const { Icon, errorMessage, ...rest } = props;
